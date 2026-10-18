@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0a">
+<title>FITTRACK — Fitness & Running</title>
+<style>
+:root{--bg:#0a0a0a;--card:#151515;--c2:#202020;--tx:#f5f5f5;--mut:#a3a3a3;--ac:#39ff14;--on:#061200;--bd:#2a2a2a}
+[data-theme=light]{--bg:#f2f5f0;--card:#fff;--c2:#ecf0ea;--tx:#111;--mut:#555;--ac:#128000;--on:#fff;--bd:#d9e0d6}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--tx)}
+.skip{position:absolute;left:-999px}.skip:focus{left:8px;top:8px;background:var(--ac);color:var(--on);padding:8px;z-index:20}
+header{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:var(--bg);border-bottom:1px solid var(--bd);height:57px}
+.logo{font-weight:900;letter-spacing:2px;font-size:1.15rem}.logo span{color:var(--ac)}
+main{max-width:980px;margin:auto;padding:16px 16px 100px;outline:0}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--card);border-top:1px solid var(--bd);z-index:6;padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;background:none;border:0;color:var(--mut);padding:8px 2px;font-size:.72rem;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;min-height:56px}
+nav button span{font-size:1.3rem}nav [aria-current]{color:var(--ac);font-weight:700}
+@media(min-width:900px){body{padding-left:88px}nav{top:57px;bottom:0;right:auto;width:88px;flex-direction:column;justify-content:flex-start;border-top:0;border-right:1px solid var(--bd)}nav button{flex:none;padding:14px 2px}}
+h1{font-size:clamp(1.7rem,6vw,2.6rem);line-height:1.1;margin:.2em 0 .6em;letter-spacing:-.5px}h2{font-size:1.05rem;margin:0 0 10px}h3{margin:14px 0 6px}
+.hero{background:radial-gradient(circle at 85% 0,rgba(57,255,20,.28),transparent 55%),var(--card);border:1px solid var(--bd);border-radius:24px;padding:22px;margin-bottom:14px}
+[data-theme=light] .hero{background:radial-gradient(circle at 85% 0,rgba(18,128,0,.2),transparent 55%),var(--card)}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(290px,1fr))}.wide{grid-column:1/-1}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:16px;margin-bottom:14px}.grid>.card{margin:0}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{background:var(--ac);color:var(--on);border:0;border-radius:14px;padding:12px 18px;font-weight:700;font-size:1rem;cursor:pointer;min-height:46px;transition:transform .15s}
+.btn:active{transform:scale(.97)}.btn.ghost{background:transparent;color:var(--tx);border:1px solid var(--bd)}.btn.big{flex:1;min-height:56px}
+.btn.sm{padding:6px 12px;min-height:34px;font-size:.85rem}.btn.del{background:transparent;color:#ff5c5c;border:1px solid #ff5c5c55}
+.icon{background:var(--c2);color:var(--tx);border:1px solid var(--bd);border-radius:50%;width:42px;height:42px;font-size:1.1rem;cursor:pointer}
+.chip{background:var(--c2);color:var(--tx);border:1px solid var(--bd);border-radius:99px;padding:6px 14px;cursor:pointer;font-size:.9rem}
+.chip[aria-pressed=true]{background:var(--ac);color:var(--on);border-color:var(--ac);font-weight:700}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stats div{background:var(--c2);border-radius:14px;padding:10px}
+.stats b{display:block;font-size:1.6rem;line-height:1.1}small,.note{color:var(--mut);font-size:.82rem}
+.run4 b{font-variant-numeric:tabular-nums}
+.rings{display:flex;justify-content:space-around;gap:6px;text-align:center}.ring{position:relative;width:96px}
+.ring svg{width:96px;height:96px}.ring circle{fill:none;stroke-width:7}.ring .bg{stroke:var(--c2)}.ring .fg{stroke:var(--ac);stroke-linecap:round;transition:stroke-dasharray .6s}
+.ring b{position:absolute;top:30px;left:0;right:0;font-size:.7rem}.ring small{display:block}
+.chart{width:100%;height:auto}.chart rect{fill:var(--ac)}.chart text{fill:var(--mut);font-size:9px}
+input,select,textarea{width:100%;background:var(--c2);color:var(--tx);border:1px solid var(--bd);border-radius:12px;padding:11px;font:inherit;margin:4px 0 10px}
+label{font-size:.9rem;color:var(--mut)}textarea{min-height:90px}
+#map{height:250px;border-radius:16px;margin-bottom:10px;background:var(--c2);display:flex;align-items:center;justify-content:center;text-align:center;padding:20px}
+.ex{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--bd);color:var(--tx);font-size:1rem}.ex input{width:24px;height:24px;margin:2px 0;accent-color:var(--ac);flex:none}.ex small{display:block}
+.li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--bd)}
+.bar{height:8px;background:var(--c2);border-radius:9px;overflow:hidden;margin-top:6px}.bar i{display:block;height:100%;background:var(--ac)}
+.badge{opacity:.55}.badge.got{opacity:1}.badge.got h3::before{content:"🏆 "}
+.big-t{font-size:3rem;font-weight:800;font-variant-numeric:tabular-nums;text-align:center}
+#toast{position:fixed;left:50%;bottom:84px;transform:translate(-50%,20px);background:var(--ac);color:var(--on);padding:10px 18px;border-radius:12px;opacity:0;pointer-events:none;transition:.25s;z-index:30;max-width:90%;font-weight:600}#toast.on{opacity:1;transform:translate(-50%,0)}
+.warn{border-left:4px solid #ffb020;padding-left:12px}
+:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.hidden{display:none!important}
+
+/* Premium photo enhancements */
+.hero{position:relative;overflow:hidden;isolation:isolate}
+.hero-photo{background-image:linear-gradient(90deg,rgba(5,10,5,.94) 0%,rgba(5,10,5,.74) 48%,rgba(5,10,5,.18) 100%),url('https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1400&q=85');background-size:cover;background-position:center 42%;border-color:#394634}
+.hero-photo h1,.hero-photo p,.hero-photo small{position:relative;z-index:1}
+.hero-photo .note{color:#e1e8df}
+.photo-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}
+.photo-tile{min-height:118px;border-radius:16px;overflow:hidden;position:relative;background:#202020 center/cover no-repeat;border:1px solid var(--bd)}
+.photo-tile:after{content:"";position:absolute;inset:35% 0 0;background:linear-gradient(transparent,rgba(0,0,0,.78))}
+.photo-tile span{position:absolute;z-index:1;left:10px;right:8px;bottom:8px;color:#fff;font-weight:750;font-size:.82rem;line-height:1.2}
+.photo-run{background-image:url('https://images.unsplash.com/photo-1530549387789-4c1017266635?auto=format&fit=crop&w=600&q=80')}
+.photo-strength{background-image:url('https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=600&q=80')}
+.photo-recovery{background-image:url('https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=600&q=80')}
+.section-photo{width:100%;height:180px;object-fit:cover;border-radius:16px;margin:0 0 14px;display:block}
+@media(max-width:390px){.photo-tile{min-height:100px}.photo-tile span{font-size:.74rem}.photo-strip{gap:7px}}
+
+
+.exercise-guide{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:14px 0}
+.guide-card{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:15px}
+.guide-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.guide-icon{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:var(--c2);font-size:1.35rem}
+.guide-head h2{margin:0}
+.guide-step{display:flex;gap:10px;padding:11px 0;border-bottom:1px solid var(--bd)}
+.guide-step:last-child{border-bottom:0}
+.step-no{flex:0 0 28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--ac);color:var(--on);font-weight:800;font-size:.85rem}
+.guide-step p{margin:2px 0 0;font-size:.9rem}
+.guide-step small{display:block;margin-top:3px}
+.guide-callout{border-left:4px solid var(--ac);padding:10px 12px;background:var(--c2);border-radius:0 12px 12px 0;margin-top:12px}
+.guide-callout.warn{border-left-color:#ffb020}
+.checkline{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--bd)}
+.checkline input{width:22px;height:22px;flex:none;margin:2px 0;accent-color:var(--ac)}
+
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header><div class="logo">FIT<span>TRACK</span></div><button class="icon" id="themeBtn" aria-label="Toggle theme">☼</button></header>
+<main id="main" tabindex="-1">
+<section id="homePage" class="page">
+ <div class="hero hero-photo">
+  <small id="todayLabel">YOUR FITNESS DASHBOARD</small>
+  <h1>Stronger every<br><span style="color:var(--ac)">single day.</span></h1>
+  <p class="note">Every step counts. Start small, stay consistent.</p>
+  <div class="row"><button class="btn big" onclick="showPage('runPage','Run')">▶ Start a run</button><button class="btn big ghost" onclick="showPage('workoutPage','Workout')">Workout plan</button></div>
+ </div>
+ <div class="photo-strip" aria-label="Fitness inspiration">
+  <div class="photo-tile photo-run"><span>RUN STRONG</span></div>
+  <div class="photo-tile photo-strength"><span>BUILD STRENGTH</span></div>
+  <div class="photo-tile photo-recovery"><span>RECOVER WELL</span></div>
+ </div>
+ <div class="grid">
+  <div class="card"><h2>Today's activity</h2><div class="stats">
+   <div><small>Distance</small><b id="homeDistance">0.00 km</b></div><div><small>Run time</small><b id="homeTime">00:00</b></div>
+   <div><small>Sessions</small><b id="homeSessions">0</b></div><div><small>Calories est.</small><b id="homeCalories">0</b></div>
+  </div></div>
+  <div class="card"><h2>Daily goals</h2><div class="rings">
+   <div class="ring"><svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="40"/><circle id="distanceRing" class="fg" cx="50" cy="50" r="40" stroke-dasharray="0 251" transform="rotate(-90 50 50)"/></svg><b id="goalDistanceText">0 / 3 km</b><small>Distance</small></div>
+   <div class="ring"><svg viewBox="0 0 100 100"><circle class="bg" cx="50" cy="50" r="40"/><circle id="timeRing" class="fg" cx="50" cy="50" r="40" stroke-dasharray="0 251" transform="rotate(-90 50 50)"/></svg><b id="goalTimeText">0 / 30 min</b><small>Active time</small></div>
+  </div><p class="note">Goals are editable in Settings.</p></div>
+  <div class="card wide"><h2>Recent runs</h2><div id="recentRuns"><p class="note">Your saved runs will appear here.</p></div><button class="btn ghost sm" onclick="showPage('historyPage','History')">View history →</button></div>
+ </div>
+</section>
+<section id="runPage" class="page hidden">
+ <div class="hero hero-photo"><small>LIVE ACTIVITY</small><h1>Run tracker</h1><p class="note">Allow location access for GPS-based distance. Keep your phone with you.</p></div>
+ <div class="card"><div id="map"><div><div style="font-size:2rem">📍</div><b>GPS location</b><p class="note" id="gpsStatus">GPS starts when you begin tracking.</p></div></div>
+  <div class="stats">
+   <div><small>Distance</small><b id="runDistance">0.00 km</b></div><div><small>Duration</small><b id="runTime">00:00</b></div>
+   <div><small>Avg. pace</small><b id="runPace">--:-- /km</b></div><div><small>Calories est.</small><b id="runCalories">0 kcal</b></div>
+  </div>
+  <div style="height:16px"></div><div class="row"><button class="btn big" id="startBtn">▶ Start</button><button class="btn big ghost" id="pauseBtn" disabled>Ⅱ Pause</button><button class="btn big ghost" id="finishBtn" disabled>■ Finish</button></div>
+  <p class="note">GPS may be inaccurate indoors. Distance is calculated from location updates and may vary by device.</p>
+ </div>
+ <div class="card"><h2>Manual run entry</h2><p class="note">No GPS? Add a run manually after your workout.</p><form id="manualRunForm"><label for="manualKm">Distance (km)</label><input id="manualKm" type="number" min="0.01" max="300" step="0.01" required placeholder="e.g. 2.5"><label for="manualMinutes">Duration (minutes)</label><input id="manualMinutes" type="number" min="1" max="1440" step="1" required placeholder="e.g. 20"><button class="btn" type="submit">Save manual run</button></form></div>
+</section>
+<section id="workoutPage" class="page hidden">
+ <div class="hero"><small>MOVE WITH PURPOSE</small><h1>Workout plan</h1><p class="note">Choose a simple routine and tick each exercise as you finish.</p></div>
+ <div class="card"><img class="section-photo" src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1200&q=85" alt="Athlete training in a gym" loading="lazy"><div class="row" id="workoutChips"><button class="chip" aria-pressed="true" data-plan="starter">Starter</button><button class="chip" aria-pressed="false" data-plan="strength">Strength</button><button class="chip" aria-pressed="false" data-plan="mobility">Mobility</button></div><div id="exerciseList"></div><div class="bar"><i id="workoutProgress" style="width:0%"></i></div><p class="note" id="workoutProgressText">0 of 5 completed</p><button class="btn ghost" id="resetWorkout">Reset checklist</button></div>
+ <div class="card"><h2>Before you start</h2><p>Warm up for 5 minutes, use comfortable form, and rest when needed. Stop if you feel pain, dizziness, or unwell.</p></div>
+</section>
+<section id="historyPage" class="page hidden">
+ <div class="hero"><small>YOUR PROGRESS</small><h1>Run history</h1><p class="note">Your runs are saved in this browser on this device.</p></div>
+ <div class="card"><div class="stats"><div><small>Total distance</small><b id="totalDistance">0.00 km</b></div><div><small>Total time</small><b id="totalTime">0 min</b></div><div><small>Total runs</small><b id="totalRuns">0</b></div><div><small>Best distance</small><b id="bestRun">0 km</b></div></div></div>
+ <div class="card"><h2>Activity log</h2><div id="allRuns"><p class="note">No runs saved yet. Start your first run today.</p></div><button class="btn del sm" id="clearHistory">Clear history</button></div>
+ <div class="card"><h2>Weekly distance</h2><svg id="weeklyChart" class="chart" viewBox="0 0 320 135" role="img" aria-label="Weekly distance chart"></svg></div>
+</section>
+
+<section id="guidePage" class="page hidden">
+ <div class="hero">
+  <small>RUN SMART • STAY SAFE</small>
+  <h1>Run preparation<br><span style="color:var(--ac)">made simple.</span></h1>
+  <p class="note">A clear guide for before your run, after your run, and rest days.</p>
+ </div>
+ <div class="card">
+  <h2>Quick guide</h2>
+  <div class="stats">
+   <div><small>Before running</small><b>5–10 min</b><small>Easy warm-up</small></div>
+   <div><small>After running</small><b>5–10 min</b><small>Cool-down</small></div>
+  </div>
+  <p class="note">Start gently. These are general suggestions, not a medical plan. Adjust to your fitness and comfort.</p>
+ </div>
+ <div class="exercise-guide">
+  <div class="guide-card">
+   <div class="guide-head"><div class="guide-icon">🔥</div><div><h2>1. Before running</h2><small>Dynamic warm-up · 5–10 minutes</small></div></div>
+   <div class="guide-step"><span class="step-no">1</span><div><b>Easy walk</b><p>Walk at a comfortable pace to warm up.</p><small>2 minutes</small></div></div>
+   <div class="guide-step"><span class="step-no">2</span><div><b>Ankle circles</b><p>Hold a support if needed; circle each ankle gently.</p><small>10 circles each direction per ankle</small></div></div>
+   <div class="guide-step"><span class="step-no">3</span><div><b>March in place</b><p>Lift knees comfortably; keep your posture tall.</p><small>30–45 seconds</small></div></div>
+   <div class="guide-step"><span class="step-no">4</span><div><b>Leg swings</b><p>Hold a wall or railing and swing one leg gently forward and back.</p><small>8–10 each leg</small></div></div>
+   <div class="guide-step"><span class="step-no">5</span><div><b>Easy jog</b><p>Begin slowly before moving toward your normal running pace.</p><small>2–3 minutes</small></div></div>
+   <div class="guide-callout"><b>Remember:</b> Warm up with controlled movement. Do not force a stretch or bounce aggressively.</div>
+  </div>
+  <div class="guide-card">
+   <div class="guide-head"><div class="guide-icon">🧊</div><div><h2>2. After running</h2><small>Cool-down · 5–10 minutes</small></div></div>
+   <div class="guide-step"><span class="step-no">1</span><div><b>Slow to a walk</b><p>Reduce your pace gradually instead of stopping suddenly.</p><small>3–5 minutes</small></div></div>
+   <div class="guide-step"><span class="step-no">2</span><div><b>Calf stretch</b><p>Hands on a wall, one foot behind, heel down. Lean forward gently.</p><small>20–30 seconds each side</small></div></div>
+   <div class="guide-step"><span class="step-no">3</span><div><b>Front-thigh stretch</b><p>Hold a support, bend your knee and bring heel gently toward your body.</p><small>20–30 seconds each side</small></div></div>
+   <div class="guide-step"><span class="step-no">4</span><div><b>Hamstring stretch</b><p>Place one heel slightly forward and hinge at your hips with a straight back.</p><small>20–30 seconds each side</small></div></div>
+   <div class="guide-step"><span class="step-no">5</span><div><b>Easy breathing</b><p>Relax your shoulders and let your breathing settle naturally.</p><small>1 minute</small></div></div>
+   <div class="guide-callout"><b>Stretch gently:</b> You should feel mild tension, not pain. Never bounce or force the position.</div>
+  </div>
+ </div>
+ <div class="card">
+  <div class="guide-head"><div class="guide-icon">✅</div><div><h2>Run-day checklist</h2><small>Tick these off before you head out</small></div></div>
+  <label class="checkline"><input type="checkbox" data-runcheck="shoes"><span><b>Comfortable shoes</b><small>Check laces and choose a familiar, safe route.</small></span></label>
+  <label class="checkline"><input type="checkbox" data-runcheck="water"><span><b>Water and weather</b><small>Drink according to thirst; consider heat and air quality.</small></span></label>
+  <label class="checkline"><input type="checkbox" data-runcheck="warmup"><span><b>Warm-up complete</b><small>Walk and move gently before running faster.</small></span></label>
+  <label class="checkline"><input type="checkbox" data-runcheck="cooldown"><span><b>Cool-down complete</b><small>Walk until breathing settles, then stretch comfortably.</small></span></label>
+  <button class="btn ghost sm" id="resetRunChecklist" style="margin-top:12px">Reset checklist</button>
+ </div>
+ <div class="card">
+  <div class="guide-head"><div class="guide-icon">💧</div><div><h2>After-run recovery</h2></div></div>
+  <p>Have water, and eat a normal balanced meal or snack when hungry. Include carbohydrates and protein across your meals. Give yourself rest days when needed and increase running gradually.</p>
+  <div class="guide-callout warn"><b>Safety first:</b> Stop if you feel pain, dizziness, chest discomfort, or unusually short of breath. If symptoms are severe or do not settle, get help from a trusted adult or medical professional.</div>
+ </div>
+</section>
+
+<section id="settingsPage" class="page hidden">
+ <div class="hero"><small>MAKE IT YOURS</small><h1>Settings</h1><p class="note">Personalize your fitness goals.</p></div>
+ <div class="card"><h2>Your profile</h2><label for="userName">Name / nickname</label><input id="userName" placeholder="Your name"><label for="weight">Weight (kg) — used for calorie estimate</label><input id="weight" type="number" min="20" max="300" placeholder="e.g. 60"><button class="btn" id="saveProfile">Save profile</button></div>
+ <div class="card"><h2>Daily targets</h2><label for="distanceGoal">Distance goal (km)</label><input id="distanceGoal" type="number" min="0.1" max="100" step="0.1" value="3"><label for="timeGoal">Active time goal (minutes)</label><input id="timeGoal" type="number" min="1" max="600" step="1" value="30"><button class="btn" id="saveGoals">Save goals</button></div>
+ <div class="card"><h2>Privacy & data</h2><p class="note">Run data is stored locally in this browser. GPS is used only while tracking is active. This simple demo does not send your location to a server.</p><button class="btn ghost" id="exportData">Export run data (JSON)</button></div>
+</section>
+</main>
+<nav aria-label="Main navigation">
+ <button aria-current="page" data-page="homePage" data-label="Home"><span>⌂</span>Home</button>
+ <button data-page="runPage" data-label="Run"><span>🏃</span>Run</button>
+ <button data-page="workoutPage" data-label="Workout"><span>💪</span>Workout</button>
+ <button data-page="guidePage" data-label="Guide"><span>🧘</span>Run Guide</button>
+ <button data-page="historyPage" data-label="History"><span>▤</span>History</button>
+ <button data-page="settingsPage" data-label="Settings"><span>⚙</span>Settings</button>
+</nav>
+<div id="toast" role="status" aria-live="polite"></div>
+<script>
+const $=id=>document.getElementById(id);
+const STORE='fittrack_runs_v1', SETTINGS='fittrack_settings_v1';
+let runs=JSON.parse(localStorage.getItem(STORE)||'[]');
+let settings=Object.assign({name:'',weight:60,distanceGoal:3,timeGoal:30},JSON.parse(localStorage.getItem(SETTINGS)||'{}'));
+let running=false,paused=false,startAt=0,elapsed=0,lastPoint=null,watchId=null,meters=0,timer=null,points=0;
+const fmtTime=s=>{s=Math.max(0,Math.floor(s));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')};
+const today=()=>new Date().toLocaleDateString();
+function toast(msg){$('toast').textContent=msg;$('toast').classList.add('on');setTimeout(()=>$('toast').classList.remove('on'),2400)}
+function showPage(id,label){document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden'));$(id).classList.remove('hidden');document.querySelectorAll('nav button').forEach(b=>b.hasAttribute('data-page')&&b.setAttribute('aria-current',b.dataset.page===id?'page':'false'));window.scrollTo({top:0,behavior:'smooth'});if(id==='historyPage')renderHistory();if(id==='homePage')renderHome()}
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page,b.dataset.label)));
+$('todayLabel').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'}).toUpperCase();
+function saveRuns(){localStorage.setItem(STORE,JSON.stringify(runs));renderHome();renderHistory()}
+function kcal(km,minutes){return Math.round(km*(Number(settings.weight)||60)*0.9)}
+function renderHome(){
+ const todays=runs.filter(r=>new Date(r.date).toDateString()===new Date().toDateString());
+ const km=todays.reduce((a,r)=>a+r.km,0),secs=todays.reduce((a,r)=>a+r.minutes*60,0);
+ $('homeDistance').textContent=km.toFixed(2)+' km';$('homeTime').textContent=fmtTime(secs);$('homeSessions').textContent=todays.length;$('homeCalories').textContent=kcal(km,secs/60);
+ $('goalDistanceText').textContent=km.toFixed(1)+' / '+settings.distanceGoal+' km';$('goalTimeText').textContent=Math.round(secs/60)+' / '+settings.timeGoal+' min';
+ $('distanceRing').setAttribute('stroke-dasharray',Math.min(km/settings.distanceGoal,1)*251+' 251');$('timeRing').setAttribute('stroke-dasharray',Math.min(secs/60/settings.timeGoal,1)*251+' 251');
+ const list=[...runs].slice(-3).reverse();$('recentRuns').innerHTML=list.length?list.map(r=>`<div class="li"><div><b>${r.km.toFixed(2)} km</b><small style="display:block">${new Date(r.date).toLocaleDateString()} · ${r.source==='GPS'?'GPS run':'Manual run'}</small></div><b>${fmtTime(r.minutes*60)}</b></div>`).join(''):'<p class="note">Your saved runs will appear here.</p>';
+}
+function renderHistory(){
+ const km=runs.reduce((a,r)=>a+r.km,0),mins=runs.reduce((a,r)=>a+r.minutes,0);
+ $('totalDistance').textContent=km.toFixed(2)+' km';$('totalTime').textContent=Math.round(mins)+' min';$('totalRuns').textContent=runs.length;$('bestRun').textContent=(runs.length?Math.max(...runs.map(r=>r.km)):0).toFixed(2)+' km';
+ $('allRuns').innerHTML=runs.length?[...runs].reverse().map((r,i)=>`<div class="li"><div><b>${r.km.toFixed(2)} km</b><small style="display:block">${new Date(r.date).toLocaleString()} · ${r.source||'Run'}</small></div><div style="text-align:right"><b>${fmtTime(r.minutes*60)}</b><br><button class="btn del sm" onclick="deleteRun('${r.id}')">Delete</button></div></div>`).join(''):'<p class="note">No runs saved yet. Start your first run today.</p>';
+ const days=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push({label:d.toLocaleDateString(undefined,{weekday:'short'}),km:runs.filter(r=>new Date(r.date).toDateString()===d.toDateString()).reduce((a,r)=>a+r.km,0)})}
+ const max=Math.max(1,...days.map(d=>d.km));$('weeklyChart').innerHTML=days.map((d,i)=>{const h=d.km/max*82;return `<rect x="${14+i*44}" y="${100-h}" width="24" height="${h}" rx="4"></rect><text x="${26+i*44}" y="119" text-anchor="middle">${d.label}</text><text x="${26+i*44}" y="${94-h}" text-anchor="middle">${d.km.toFixed(1)}</text>`}).join('');
+}
+function deleteRun(id){runs=runs.filter(r=>r.id!==id);saveRuns();toast('Run deleted')}
+function updateLive(){
+ const seconds=elapsed+(running&&!paused?(Date.now()-startAt)/1000:0),km=meters/1000;
+ $('runDistance').textContent=km.toFixed(2)+' km';$('runTime').textContent=fmtTime(seconds);$('runCalories').textContent=kcal(km,seconds/60)+' kcal';$('runPace').textContent=km>0.03?fmtTime(seconds/km)+' /km':'--:-- /km';
+}
+function startRun(){
+ if(running&&!paused)return;
+ if(!running){running=true;paused=false;elapsed=0;meters=0;points=0;lastPoint=null;startAt=Date.now();$('gpsStatus').textContent='Requesting GPS location…';$('startBtn').textContent='● Tracking';$('pauseBtn').disabled=false;$('finishBtn').disabled=false;
+  if(!navigator.geolocation){$('gpsStatus').textContent='GPS is not available on this browser. Use manual entry.';toast('GPS unavailable — manual entry is available');}
+  else {watchId=navigator.geolocation.watchPosition(pos=>{if(!running||paused)return;const p={lat:pos.coords.latitude,lon:pos.coords.longitude,acc:pos.coords.accuracy};if(p.acc>60){$('gpsStatus').textContent='GPS signal weak — waiting for a more accurate location.';return;}if(lastPoint){const d=distance(lastPoint.lat,lastPoint.lon,p.lat,p.lon);if(d<0.5||d>200){}else{meters+=d;points++;}}lastPoint=p;$('gpsStatus').textContent=`GPS connected · Accuracy about ${Math.round(p.acc)} m · ${points} location updates`;updateLive();},err=>{$('gpsStatus').textContent='Could not get GPS. Check location permission and try again, or add a manual run.';},{enableHighAccuracy:true,maximumAge:1000,timeout:15000});}
+ } else {paused=false;startAt=Date.now();$('startBtn').textContent='● Tracking';$('gpsStatus').textContent='Tracking resumed.';}
+ timer=setInterval(updateLive,500);updateLive();toast('Run started — have a safe run!');
+}
+function distance(a,b,c,d){const R=6371000,toRad=x=>x*Math.PI/180;const x=toRad(c-a),y=toRad(d-b);const q=Math.sin(x/2)**2+Math.cos(toRad(a))*Math.cos(toRad(c))*Math.sin(y/2)**2;return 2*R*Math.atan2(Math.sqrt(q),Math.sqrt(1-q))}
+function pauseRun(){if(!running||paused)return;elapsed+=(Date.now()-startAt)/1000;paused=true;lastPoint=null;clearInterval(timer);if(watchId!==null)navigator.geolocation.clearWatch(watchId);watchId=null;$('startBtn').textContent='▶ Resume';$('gpsStatus').textContent='Run paused.';updateLive();toast('Run paused')}
+function finishRun(){if(!running)return;if(!paused)elapsed+=(Date.now()-startAt)/1000;running=false;paused=false;clearInterval(timer);if(watchId!==null)navigator.geolocation.clearWatch(watchId);watchId=null;
+ const km=meters/1000,mins=elapsed/60;
+ if(km>0.005&&mins>0){runs.push({id:Date.now().toString(),date:new Date().toISOString(),km,minutes:mins,source:'GPS'});saveRuns();toast('Run saved! Great work.')}else toast('Run finished. Not enough GPS distance to save — use manual entry if needed.');
+ $('startBtn').textContent='▶ Start';$('pauseBtn').disabled=true;$('finishBtn').disabled=true;$('gpsStatus').textContent='Run finished. Start another run whenever you are ready.';updateLive();
+}
+$('startBtn').addEventListener('click',startRun);$('pauseBtn').addEventListener('click',pauseRun);$('finishBtn').addEventListener('click',finishRun);
+$('manualRunForm').addEventListener('submit',e=>{e.preventDefault();const km=Number($('manualKm').value),mins=Number($('manualMinutes').value);if(km<=0||mins<=0)return;runs.push({id:Date.now().toString(),date:new Date().toISOString(),km,minutes:mins,source:'Manual'});saveRuns();e.target.reset();toast('Manual run saved!');});
+$('clearHistory').addEventListener('click',()=>{if(confirm('Delete all saved runs from this browser?')){runs=[];saveRuns();toast('History cleared')}});
+const plans={
+ starter:[['Easy warm-up','5 minutes walking'],['Bodyweight squats','2 sets × 10 reps'],['Wall push-ups','2 sets × 8 reps'],['Glute bridges','2 sets × 10 reps'],['Gentle cool-down','5 minutes']],
+ strength:[['Warm-up','5 minutes easy movement'],['Bodyweight squats','3 sets × 10 reps'],['Wall or knee push-ups','3 sets × 8 reps'],['Bird-dog','2 sets × 8 each side'],['Cool-down','5 minutes stretching']],
+ mobility:[['Easy walk','3–5 minutes'],['Shoulder circles','10 each direction'],['Hip circles','10 each direction'],['Calf raises','2 sets × 12 reps'],['Gentle full-body stretch','5 minutes']]
+};let currentPlan='starter';
+function renderWorkout(){const checks=JSON.parse(localStorage.getItem('fittrack_checks_'+currentPlan)||'[]');$('exerciseList').innerHTML=plans[currentPlan].map((x,i)=>`<label class="ex"><input type="checkbox" data-ex="${i}" ${checks.includes(i)?'checked':''}><span><b>${x[0]}</b><small>${x[1]}</small></span></label>`).join('');document.querySelectorAll('[data-ex]').forEach(c=>c.addEventListener('change',updateWorkout));updateWorkout()}
+function updateWorkout(){const checks=[...document.querySelectorAll('[data-ex]:checked')].map(c=>Number(c.dataset.ex));localStorage.setItem('fittrack_checks_'+currentPlan,JSON.stringify(checks));$('workoutProgress').style.width=(checks.length/plans[currentPlan].length*100)+'%';$('workoutProgressText').textContent=`${checks.length} of ${plans[currentPlan].length} completed`}
+document.querySelectorAll('[data-plan]').forEach(b=>b.addEventListener('click',()=>{currentPlan=b.dataset.plan;document.querySelectorAll('[data-plan]').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'));renderWorkout()}));
+$('resetWorkout').addEventListener('click',()=>{localStorage.removeItem('fittrack_checks_'+currentPlan);renderWorkout();toast('Checklist reset')});
+function loadSettings(){$('userName').value=settings.name||'';$('weight').value=settings.weight||60;$('distanceGoal').value=settings.distanceGoal;$('timeGoal').value=settings.timeGoal}
+$('saveProfile').addEventListener('click',()=>{settings.name=$('userName').value.trim();settings.weight=Math.max(20,Number($('weight').value)||60);localStorage.setItem(SETTINGS,JSON.stringify(settings));toast('Profile saved')});
+$('saveGoals').addEventListener('click',()=>{settings.distanceGoal=Math.max(.1,Number($('distanceGoal').value)||3);settings.timeGoal=Math.max(1,Number($('timeGoal').value)||30);localStorage.setItem(SETTINGS,JSON.stringify(settings));renderHome();toast('Goals updated')});
+$('themeBtn').addEventListener('click',()=>{const light=document.documentElement.dataset.theme!=='light';document.documentElement.dataset.theme=light?'light':'dark';localStorage.setItem('fittrack_theme',light?'light':'dark');$('themeBtn').textContent=light?'☾':'☼'});
+$('exportData').addEventListener('click',()=>{const blob=new Blob([JSON.stringify({settings,runs},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='fittrack-data.json';a.click();URL.revokeObjectURL(url);toast('Data export created')});
+const savedTheme=localStorage.getItem('fittrack_theme');if(savedTheme){document.documentElement.dataset.theme=savedTheme;$('themeBtn').textContent=savedTheme==='light'?'☾':'☼'}
+loadSettings();renderWorkout();renderHome();renderHistory();
+
+document.querySelectorAll('[data-runcheck]').forEach(c=>{
+ const key='fittrack_runcheck_'+c.dataset.runcheck;
+ c.checked=localStorage.getItem(key)==='true';
+ c.addEventListener('change',()=>localStorage.setItem(key,c.checked?'true':'false'));
+});
+$('resetRunChecklist').addEventListener('click',()=>{
+ document.querySelectorAll('[data-runcheck]').forEach(c=>{c.checked=false;localStorage.removeItem('fittrack_runcheck_'+c.dataset.runcheck)});
+ toast('Run checklist reset');
+});
+
+</script>
+</body>
+</html>
